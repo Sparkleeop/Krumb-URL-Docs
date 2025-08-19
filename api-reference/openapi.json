@@ -70,7 +70,7 @@
       }
     },
     "/api/stats/{short_id}": {
-      "post": {
+      "get": {
         "summary": "Get Link Stats",
         "description": "Retrieve analytics for a specific short link.",
         "parameters": [
@@ -79,24 +79,29 @@
             "in": "path",
             "required": true,
             "schema": { "type": "string" }
+          },
+          {
+            "name": "X-Email",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Your account email"
+          },
+          {
+            "name": "X-Password",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Your account password"
+          },
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Your API key"
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": { "type": "string" },
-                  "password": { "type": "string" },
-                  "api_key": { "type": "string" }
-                },
-                "required": ["email", "password", "api_key"]
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Stats retrieved",
@@ -115,8 +120,9 @@
               }
             }
           },
-          "404": { "description": "Link not found" },
-          "403": { "description": "Authentication failed" }
+          "400": { "description": "Missing headers" },
+          "403": { "description": "Authentication failed" },
+          "404": { "description": "Link not found" }
         }
       }
     },

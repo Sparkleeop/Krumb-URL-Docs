@@ -1,23 +1,28 @@
 ---
 title: 'URL Analytics'
-openapi: 'POST /api/stats/{short_id}'
+openapi: 'GET /api/stats/{short_id}'
 ---
 
-`POST /api/stats/short_id`
+`GET /api/stats/{short_id}`
 
 Retrieve analytics for a shortened link.
 
 ## Path Parameters
-- `:short_id` – The short ID (e.g. `abc123` from `https://krumb.fun/abc123`)
+- `short_id` – The short ID (e.g. `abc123` from `https://api.krumb.fun/abc123`)
 
-## Request
+## Request Headers
 
-```json
-{
-  "email": "user@example.com",
-  "password": "your_password",
-  "api_key": "your_api_key"
-}
+- `X-Email`: Your account email (e.g. `user@example.com`)
+- `X-Password`: Your account password
+- `X-Api-Key`: Your API key
+
+### Example Request
+```http
+GET /api/stats/abc123 HTTP/1.1
+Host: api.krumb.fun
+X-Email: user@example.com
+X-Password: your_password
+X-Api-Key: your_api_key
 ````
 
 ## Success Response
@@ -34,8 +39,8 @@ Retrieve analytics for a shortened link.
 
 ## Error Responses
 
-* `400` – Missing fields
+* `400` – Missing headers
 * `403` – Invalid credentials
 * `404` – Link not found
 
-````
+```
