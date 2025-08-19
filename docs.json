@@ -24,7 +24,10 @@
             "pages": [
               "api-reference/endpoint/shorten",
               "api-reference/endpoint/stats",
-              "api-reference/endpoint/qr"
+              "api-reference/endpoint/qr",
+              "api-reference/endpoint/get_links",
+              "api-reference/endpoint/delete_link",
+              "api-reference/endpoint/update_link"
             ]
           }
         ]
