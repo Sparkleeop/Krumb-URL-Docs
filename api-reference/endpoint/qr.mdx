@@ -1,0 +1,39 @@
+---
+title: 'QR Code'
+openapi: 'POST /api/qr/:short_id'
+---
+
+`POST /api/qr/:short_id`
+
+Generate a QR code (PNG) for a shortened link.
+
+## Path Parameters
+- `:short_id` – The short ID (e.g. `abc123`)
+
+## Request
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your_password",
+  "api_key": "your_api_key"
+}
+````
+
+## Response
+
+* Returns a **PNG image**
+* Headers:
+
+```http
+Content-Type: image/png
+Content-Disposition: inline; filename="qr.png"
+```
+
+## Error Responses
+
+* `400` – Missing fields
+* `403` – Invalid credentials
+* `404` – Link not found
+
+````
