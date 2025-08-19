@@ -1,0 +1,49 @@
+---
+title: 'Update Link'
+openapi: 'PUT /api/link/{short_id}'
+---
+
+# Update Link
+
+`PUT /api/link/{short_id}`
+
+Update the destination URL for an existing short link.
+
+## Request
+
+Headers:
+
+````
+
+X-Email: [user@example.com](mailto:user@example.com)
+X-Password: your\_password
+X-Api-Key: your\_api\_key
+
+````
+
+Body:
+
+```json
+{
+  "url": "https://new-destination.com"
+}
+````
+
+## Success Response
+
+```json
+{
+  "success": true,
+  "message": "Link updated",
+  "short_id": "abc123",
+  "new_url": "https://new-destination.com"
+}
+```
+
+## Error Responses
+
+* `400` – Missing required headers or missing `url` in body
+* `403` – Authentication failed
+* `404` – Link not found
+
+```

@@ -1,158 +1,175 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Krumb API",
-    "description": "API for creating short links, viewing stats, and generating QR codes.",
-    "version": "1.0.0",
-    "license": {
-      "name": "MIT"
-    }
-  },
-  "servers": [
-    {
-      "url": "https://api.krumb.fun"
-    }
-  ],
-  "paths": {
-    "/api/shorten": {
-      "post": {
-        "summary": "Create Short URL",
-        "description": "Creates a new shortened URL for a given original URL.",
-        "requestBody": {
+  "/api/links": {
+    "get": {
+      "summary": "List Links",
+      "description": "Fetch all links created by the authenticated user.",
+      "parameters": [
+        {
+          "name": "X-Email",
+          "in": "header",
           "required": true,
+          "schema": { "type": "string" },
+          "description": "Your account email"
+        },
+        {
+          "name": "X-Password",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" },
+          "description": "Your account password"
+        },
+        {
+          "name": "X-Api-Key",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" },
+          "description": "Your API key"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of links retrieved",
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string", "example": "user@example.com" },
-                  "password": { "type": "string", "example": "mypassword" },
-                  "api_key": { "type": "string", "example": "abc123" },
-                  "url": { "type": "string", "example": "https://example.com" }
-                },
-                "required": ["email", "password", "api_key", "url"]
+                  "success": { "type": "boolean" },
+                  "links": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "short_id": { "type": "string" },
+                        "original_url": { "type": "string" },
+                        "clicks": { "type": "integer" },
+                        "created_at": { "type": "string", "format": "date-time" }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Short URL created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                    "short_url": { "type": "string" },
-                    "tokens_left": { "type": "integer" }
-                  }
+        "400": { "description": "Missing required headers" },
+        "403": { "description": "Authentication failed" }
+      }
+    }
+  },
+  "/api/link/{short_id}": {
+    "delete": {
+      "summary": "Delete Link",
+      "description": "Delete a specific short link owned by the user.",
+      "parameters": [
+        {
+          "name": "short_id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "X-Email",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "X-Password",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "X-Api-Key",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Link deleted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": { "type": "boolean" },
+                  "message": { "type": "string" }
                 }
               }
             }
-          },
-          "400": { "description": "Missing required fields" },
-          "403": { "description": "Authentication failed or out of tokens" }
-        }
+          }
+        },
+        "400": { "description": "Missing required headers" },
+        "403": { "description": "Authentication failed" },
+        "404": { "description": "Link not found" }
       }
     },
-    "/api/stats/{short_id}": {
-      "get": {
-        "summary": "Get Link Stats",
-        "description": "Retrieve analytics for a specific short link.",
-        "parameters": [
-          {
-            "name": "short_id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "X-Email",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "Your account email"
-          },
-          {
-            "name": "X-Password",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "Your account password"
-          },
-          {
-            "name": "X-Api-Key",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "Your API key"
+    "put": {
+      "summary": "Update Link",
+      "description": "Update the destination URL for an existing short link.",
+      "parameters": [
+        {
+          "name": "short_id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "X-Email",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "X-Password",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "X-Api-Key",
+          "in": "header",
+          "required": true,
+          "schema": { "type": "string" }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "url": { "type": "string", "example": "https://new-destination.com" }
+              },
+              "required": ["url"]
+            }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Stats retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                    "short_id": { "type": "string" },
-                    "original_url": { "type": "string" },
-                    "clicks": { "type": "integer" },
-                    "created_at": { "type": "string", "format": "date-time" }
-                  }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Link updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": { "type": "boolean" },
+                  "message": { "type": "string" },
+                  "short_id": { "type": "string" },
+                  "new_url": { "type": "string" }
                 }
               }
             }
-          },
-          "400": { "description": "Missing headers" },
-          "403": { "description": "Authentication failed" },
-          "404": { "description": "Link not found" }
-        }
-      }
-    },
-    "/api/qr/{short_id}": {
-      "get": {
-        "summary": "Generate QR Code",
-        "description": "Generate a QR code PNG for a short link.",
-        "parameters": [
-          {
-            "name": "short_id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "X-Email",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "X-Password",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "X-Api-Key",
-            "in": "header",
-            "required": true,
-            "schema": { "type": "string" }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "PNG QR Code for the short URL",
-            "content": {
-              "image/png": {}
-            }
-          },
-          "404": { "description": "Link not found" },
-          "403": { "description": "Authentication failed" }
-        }
+        },
+        "400": { "description": "Missing required headers or URL" },
+        "403": { "description": "Authentication failed" },
+        "404": { "description": "Link not found" }
       }
     }
   }

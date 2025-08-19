@@ -1,0 +1,39 @@
+---
+title: 'Delete Link'
+openapi: 'DELETE /api/link/{short_id}'
+---
+
+# Delete Link
+
+`DELETE /api/link/{short_id}`
+
+Delete a specific short link owned by the user.
+
+## Request
+
+Send credentials in headers:
+
+````
+
+X-Email: [user@example.com](mailto:user@example.com)
+X-Password: your\_password
+X-Api-Key: your\_api\_key
+
+````
+
+## Success Response
+
+```json
+{
+  "success": true,
+  "message": "Link deleted"
+}
+````
+
+## Error Responses
+
+* `400` – Missing required headers
+* `403` – Authentication failed
+* `404` – Link not found
+
+````
