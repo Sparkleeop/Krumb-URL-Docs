@@ -1,0 +1,49 @@
+---
+title: 'Shorten URL'
+openapi: 'POST /api/shorten'
+---
+
+# Shorten URL
+
+`POST /api/shorten`
+
+Create a new short link.
+
+## Request
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your_password",
+  "api_key": "your_api_key",
+  "url": "https://example.com/long/link"
+}
+````
+
+## Success Response
+
+```json
+{
+  "success": true,
+  "short_url": "https://api.krumb.fun/abc123",
+  "tokens_left": 299
+}
+```
+
+If the link already exists:
+
+```json
+{
+  "success": true,
+  "short_url": "https://api.krumb.fun/abc123",
+  "already_exists": true,
+  "tokens_left": 300
+}
+```
+
+## Error Responses
+
+* `400` – Missing fields
+* `403` – Invalid credentials or out of tokens
+
+````
