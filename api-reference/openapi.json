@@ -13,19 +13,6 @@
       "url": "https://api.krumb.fun"
     }
   ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  },
   "paths": {
     "/api/shorten": {
       "post": {
@@ -127,7 +114,7 @@
       }
     },
     "/api/qr/{short_id}": {
-      "post": {
+      "get": {
         "summary": "Generate QR Code",
         "description": "Generate a QR code PNG for a short link.",
         "parameters": [
@@ -136,24 +123,26 @@
             "in": "path",
             "required": true,
             "schema": { "type": "string" }
+          },
+          {
+            "name": "X-Email",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "X-Password",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": { "type": "string" },
-                  "password": { "type": "string" },
-                  "api_key": { "type": "string" }
-                },
-                "required": ["email", "password", "api_key"]
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "PNG QR Code for the short URL",
