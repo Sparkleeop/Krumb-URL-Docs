@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://krumb.fun"
+      "url": "https://api.krumb.fun"
     }
   ],
   "security": [
