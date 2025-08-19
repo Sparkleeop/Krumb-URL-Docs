@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Krumb URL Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#9a98da",
+    "light": "#e3e3ec",
+    "dark": "#0b0b15"
   },
   "favicon": "/favicon.svg",
   "navigation": {
