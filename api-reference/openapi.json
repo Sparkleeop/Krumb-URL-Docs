@@ -17,7 +17,7 @@
     "/api/shorten": {
       "post": {
         "summary": "Create Short URL",
-        "description": "Creates a new shortened URL for a given original URL.",
+        "description": "Creates a new shortened URL for a given original URL. Optionally protect the link with a password.",
         "requestBody": {
           "required": true,
           "content": {
@@ -28,7 +28,8 @@
                   "email": { "type": "string", "example": "user@example.com" },
                   "password": { "type": "string", "example": "mypassword" },
                   "api_key": { "type": "string", "example": "abc123" },
-                  "url": { "type": "string", "example": "https://example.com" }
+                  "url": { "type": "string", "example": "https://example.com" },
+                  "link_password": { "type": "string", "example": "secret123", "description": "Optional password to protect the short link" }
                 },
                 "required": ["email", "password", "api_key", "url"]
               }
@@ -45,7 +46,9 @@
                   "properties": {
                     "success": { "type": "boolean" },
                     "short_url": { "type": "string" },
-                    "tokens_left": { "type": "integer" }
+                    "tokens_left": { "type": "integer" },
+                    "require_password": { "type": "boolean", "description": "Indicates if the link requires a password" },
+                    "already_exists": { "type": "boolean", "description": "Returned if the link already exists for this user" }
                   }
                 }
               }
@@ -181,7 +184,8 @@
                           "short_id": { "type": "string" },
                           "original_url": { "type": "string" },
                           "clicks": { "type": "integer" },
-                          "created_at": { "type": "string", "format": "date-time" }
+                          "created_at": { "type": "string", "format": "date-time" },
+                          "require_password": { "type": "boolean" }
                         }
                       }
                     }

@@ -7,26 +7,44 @@ openapi: 'POST /api/shorten'
 
 `POST /api/shorten`
 
-Create a new short link.
+Create a new short link.  
+Optionally, you can protect the link with a password.
 
 ## Request
 
 ```json
 {
   "email": "user@example.com",
-  "password": "your_password",
+  "password": "your_account_password",
   "api_key": "your_api_key",
-  "url": "https://example.com/long/link"
+  "url": "https://example.com/long/link",
+  "link_password": "secret123"
 }
 ````
 
+* `link_password` *(optional)* – If provided, the generated link will require this password to access.
+
 ## Success Response
+
+Without password:
 
 ```json
 {
   "success": true,
   "short_url": "https://krumb.fun/abc123",
-  "tokens_left": 299
+  "tokens_left": 299,
+  "require_password": false
+}
+```
+
+With password:
+
+```json
+{
+  "success": true,
+  "short_url": "https://krumb.fun/xyz789",
+  "tokens_left": 299,
+  "require_password": true
 }
 ```
 
@@ -37,7 +55,8 @@ If the link already exists:
   "success": true,
   "short_url": "https://krumb.fun/abc123",
   "already_exists": true,
-  "tokens_left": 300
+  "tokens_left": 300,
+  "require_password": true
 }
 ```
 
@@ -46,4 +65,4 @@ If the link already exists:
 * `400` – Missing fields
 * `403` – Invalid credentials or out of tokens
 
-````
+```
