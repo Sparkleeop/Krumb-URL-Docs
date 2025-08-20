@@ -1,0 +1,45 @@
+---
+title: 'Expand Link'
+openapi: 'GET /api/expand/{short_id}'
+---
+
+# Expand Link
+
+`GET /api/expand/{short_id}`
+
+Retrieve the original long URL from a shortened link.
+
+## Request
+
+Headers:
+
+```
+
+X-Email: [user@example.com](mailto:user@example.com)
+X-Password: your\_password
+X-Api-Key: your\_api\_key
+
+````
+
+## Success Response
+
+```json
+{
+  "success": true,
+  "short_id": "abc123",
+  "original_url": "https://openai.com"
+}
+```
+
+## Error Responses
+
+* `400` – Missing required headers  
+* `403` – Authentication failed  
+* `404` – Link not found  
+
+```json
+{
+  "success": false,
+  "error": "Link not found"
+}
+```
